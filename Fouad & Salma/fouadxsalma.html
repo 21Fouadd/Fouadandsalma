@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Forever</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle at top, #2a0000, #0d0000);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'Inter', sans-serif;
+    color: #fff;
+    overflow: hidden;
+}
+
+/* particles */
+.particles span {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 50%;
+    animation: float 12s linear infinite;
+}
+@keyframes float {
+    from { transform: translateY(100vh); }
+    to { transform: translateY(-10vh); }
+}
+
+/* hint */
+.hint {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+}
+
+/* glass input */
+.input-box {
+    backdrop-filter: blur(12px);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 14px 20px;
+    border-radius: 30px;
+    margin-bottom: 30px;
+}
+
+input {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    width: 200px;
+}
+
+/* heart */
+.heart {
+    width: 110px;
+    height: 100px;
+    position: relative;
+    transform: rotate(-45deg);
+    background: linear-gradient(145deg, #ff2e4d, #8b0000);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(255,0,0,0.25);
+    cursor: pointer;
+    animation: heartbeat 2.4s infinite;
+}
+
+.heart::before,
+.heart::after {
+    content: "";
+    position: absolute;
+    width: 110px;
+    height: 100px;
+    background: inherit;
+    border-radius: 50%;
+}
+
+.heart::before { top: -55px; left: 0; }
+.heart::after { left: 55px; top: 0; }
+
+/* subtle heartbeat */
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1) rotate(-45deg); }
+    15% { transform: scale(1.03) rotate(-45deg); }
+    30% { transform: scale(1) rotate(-45deg); }
+    45% { transform: scale(1.05) rotate(-45deg); }
+    60% { transform: scale(1) rotate(-45deg); }
+}
+
+/* open */
+.open {
+    transform: scale(0);
+    opacity: 0;
+    transition: 0.6s ease;
+}
+
+/* content */
+.content {
+    display: none;
+    text-align: center;
+}
+
+h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    margin-top: 25px;
+    letter-spacing: 1px;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeUp 1.5s forwards;
+    animation-delay: 1.8s;
+}
+
+/* cinematic image */
+img {
+    width: 260px;
+    border-radius: 16px;
+    opacity: 0;
+    transform: scale(1.1);
+    filter: blur(20px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+}
+
+/* reveal animation */
+img.reveal {
+    animation: revealImage 2.5s ease forwards;
+}
+
+@keyframes revealImage {
+    0% {
+        opacity: 0;
+        transform: scale(1.1);
+        filter: blur(20px);
+    }
+    50% {
+        opacity: 0.6;
+        filter: blur(8px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* error */
+.error {
+    animation: shake 0.3s;
+}
+@keyframes shake {
+    25% { transform: translateX(-4px); }
+    50% { transform: translateX(4px); }
+    75% { transform: translateX(-4px); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="particles" id="particles"></div>
+
+<div class="hint">enter her name</div>
+
+<div class="input-box">
+    <input type="text" id="input" placeholder="...">
+</div>
+
+<div class="heart" id="heart"></div>
+
+<div class="content" id="content">
+    <img id="photo" src="Fouad and salma.jpg">
+    <h1>Fouad & Salma forever.</h1>
+</div>
+
+<script>
+const input = document.getElementById("input");
+const heart = document.getElementById("heart");
+const content = document.getElementById("content");
+const photo = document.getElementById("photo");
+
+/* particles */
+const particles = document.getElementById("particles");
+for (let i = 0; i < 25; i++) {
+    let p = document.createElement("span");
+    p.style.left = Math.random() * 100 + "vw";
+    p.style.animationDuration = (8 + Math.random() * 6) + "s";
+    particles.appendChild(p);
+}
+
+/* unlock */
+input.addEventListener("change", () => {
+    if (input.value.toLowerCase().trim() === "salma") {
+
+        heart.classList.add("open");
+
+        setTimeout(() => {
+            document.querySelector(".input-box").style.display = "none";
+            document.querySelector(".hint").style.display = "none";
+            heart.style.display = "none";
+            content.style.display = "block";
+
+            setTimeout(() => {
+                photo.classList.add("reveal");
+            }, 300);
+
+        }, 600);
+
+    } else {
+        input.classList.add("error");
+        setTimeout(() => input.classList.remove("error"), 300);
+    }
+});
+</script>
+
+</body>
+</html>
